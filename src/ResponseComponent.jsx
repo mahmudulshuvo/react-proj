@@ -1,22 +1,8 @@
 import React, { Component } from "react";
-
-// class ResponseComponent extends Component {
-//     render() {
-//         return (
-//             <div>
-//                 <h1>ResponseComponent</h1>
-//             </div>
-//         );
-//     }
-// }
-
-// export default ResponseComponent;
-
 import { Button } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import SaveIcon from "@material-ui/icons/Save";
 import "react-json-inspector/json-inspector.css";
-// import "./Footer.css";
 import { any } from "prop-types";
 
 const jsonURL = "https://jsonplaceholder.typicode.com/users";
