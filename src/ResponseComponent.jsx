@@ -22,9 +22,12 @@ import { any } from "prop-types";
 const jsonURL = "https://jsonplaceholder.typicode.com/users";
 
 class ResponseComponent extends Component {
-    state = {
-        jsonData: any
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            jsonData: any
+        };
+    }
 
     componentDidMount() {
         this.fetchJson();
