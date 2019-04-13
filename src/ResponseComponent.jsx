@@ -8,98 +8,103 @@ import { any } from "prop-types";
 const jsonURL = "https://jsonplaceholder.typicode.com/users";
 
 class ResponseComponent extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            jsonData: any
-        };
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      jsonData: any
+    };
+    this.jsonProps = {
+      cacheResults: true,
+      ignoreCase: true
+    };
+  }
 
-    componentDidMount() {
-        this.fetchJson();
-    }
+  componentDidMount() {
+    this.fetchJson();
+  }
 
-    fetchJson() {
-        fetch(jsonURL)
-            .then(response => response.json())
-            .then(data => {
-                this.setState({
-                    jsonData: data
-                });
-            })
-            .catch(() => console.log("Error in fetching"));
-    }
-
-    deleteData = () => {
+  fetchJson() {
+    fetch(jsonURL)
+      .then(response => response.json())
+      .then(data => {
         this.setState({
-            jsonData: null
+          jsonData: data
         });
-    };
+      })
+      .catch(() => console.log("Error in fetching"));
+  }
 
-    saveData = () => {
-        let prettyJsondata = JSON.stringify(this.state.jsonData, null, 2);
-        this.download(prettyJsondata, "json.txt", "text/plain");
-    };
+  deleteData = () => {
+    this.setState({
+      jsonData: null
+    });
+  };
 
-    download(content, fileName, contentType) {
-        var a = document.createElement("a");
-        var file = new Blob([content], { type: contentType });
-        a.href = URL.createObjectURL(file);
-        a.download = fileName;
-        a.click();
-    }
+  saveData = () => {
+    let prettyJsondata = JSON.stringify(this.state.jsonData, null, 2);
+    this.download(prettyJsondata, "json.txt", "text/plain");
+  };
 
-    expand = () => {
-        return true;
-    };
+  download(content, fileName, contentType) {
+    var a = document.createElement("a");
+    var file = new Blob([content], { type: contentType });
+    a.href = URL.createObjectURL(file);
+    a.download = fileName;
+    a.click();
+  }
 
-    render() {
-        var Inspector = require("react-json-inspector");
-        return (
-            <div
-                style={{
-                    textAlign: "left"
-                }}
-            >
-                <div
-                    style={{
-                        flexGrow: 1,
-                        marginLeft: "20px",
-                        marginTop: "20px"
-                    }}
-                >
-                    <Button
-                        variant="fab"
-                        aria-label="Delete"
-                        style={{ marginBottom: "10px" }}
-                        onClick={this.deleteData}
-                    >
-                        <DeleteIcon />
-                    </Button>
-                    <Button
-                        variant="fab"
-                        aria-label="Save"
-                        style={{ marginLeft: "20px", marginBottom: "10px" }}
-                        onClick={this.saveData}
-                    >
-                        <SaveIcon />
-                    </Button>
-                </div>
-                <div
-                    style={{
-                        flexGrow: 11,
-                        marginLeft: "20px",
-                        marginTop: "20px"
-                    }}
-                >
-                    <Inspector
-                        data={this.state.jsonData}
-                        isExpanded={this.expand}
-                    />
-                </div>
-            </div>
-        );
-    }
+  expand = () => {
+    return true;
+  };
+
+  render() {
+    var Inspector = require("react-json-inspector");
+    return (
+      <div
+        style={{
+          textAlign: "left"
+        }}
+      >
+        <div
+          style={{
+            flexGrow: 1,
+            marginLeft: "20px",
+            marginTop: "20px"
+          }}
+        >
+          <Button
+            variant="fab"
+            aria-label="Delete"
+            style={{ marginBottom: "10px" }}
+            onClick={this.deleteData}
+          >
+            <DeleteIcon />
+          </Button>
+          <Button
+            variant="fab"
+            aria-label="Save"
+            style={{ marginLeft: "20px", marginBottom: "10px" }}
+            onClick={this.saveData}
+          >
+            <SaveIcon />
+          </Button>
+        </div>
+        <div
+          style={{
+            flexGrow: 11,
+            marginLeft: "20px",
+            marginTop: "20px"
+          }}
+        >
+          <Inspector
+            data={this.state.jsonData}
+            isExpanded={this.expand}
+            filterOptions={this.jsonProps}
+          />
+        </div>
+      </div>
+    );
+  }
 }
 
 export default ResponseComponent;
