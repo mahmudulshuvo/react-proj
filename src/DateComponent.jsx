@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import DateFnsUtils from "@date-io/date-fns"; // choose your lib
-import { DatePicker, MuiPickersUtilsProvider } from "material-ui-pickers";
+import { MuiPickersUtilsProvider, InlineDatePicker } from "material-ui-pickers";
 
 class DateComponent extends Component {
   constructor(props) {
@@ -42,19 +42,31 @@ class DateComponent extends Component {
       >
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <div className="pickers">
-            <DatePicker
+            <InlineDatePicker
+              keyboard
+              clearable
+              variant="outlined"
+              label="Start Date"
               value={this.state.selectedDateFirst}
               onChange={this.handleDateChangeFirst}
+              format="MM/dd/yyyy"
+              mask={[/\d/, /\d/, "/", /\d/, /\d/, "/", /\d/, /\d/, /\d/, /\d/]}
             />
           </div>
         </MuiPickersUtilsProvider>
 
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <div className="pickers">
-            <DatePicker
+            <InlineDatePicker
+              keyboard
+              clearable
+              variant="outlined"
+              label="End Date"
               value={this.state.selectedDateSecond}
               onChange={this.handleDateChangeSecond}
               maxDate={this.state.range}
+              format="MM/dd/yyyy"
+              mask={[/\d/, /\d/, "/", /\d/, /\d/, "/", /\d/, /\d/, /\d/, /\d/]}
             />
           </div>
         </MuiPickersUtilsProvider>
