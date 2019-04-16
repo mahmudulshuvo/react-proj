@@ -7,30 +7,49 @@ class DateComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectFirst: false,
+            selectFirst: 0,
             selectedDateFirst: new Date(),
             selectedDateSecond: new Date(),
-            rangeProblem: 0
+            rangeProblem: null
         };
     }
 
     handleDateChangeFirst = event => {
         console.log("first ", new Date(event.currentTarget.value));
-        this.setState({
-            selectFirst: true,
-            selectedDateFirst: event.currentTarget.value
-        });
+        if (!event.currentTarget.value) {
+            this.setState({
+                selectFirst: true
+            });
+            toast.error("Please select start date!", {
+                position: toast.POSITION.TOP_RIGHT
+            });
+        } else {
+            this.setState({
+                selectFirst: false,
+                selectedDateFirst: event.currentTarget.value
+            });
+        }
     };
 
     handleDateChangeSecond = event => {
         console.log("second ", new Date(event.currentTarget.value));
+
         let startDate = new Date(this.state.selectedDateFirst);
         let endDate = new Date(event.currentTarget.value);
         let range = this.daysBetween(startDate, endDate);
-
         console.log("range ", range);
 
-        if (!this.state.selectFirst) {
+        if (isNaN(range)) {
+            this.setState({
+                rangeProblem: true
+            });
+            toast.error(
+                "Please check, Either one or both selections missing!",
+                {
+                    position: toast.POSITION.TOP_RIGHT
+                }
+            );
+        } else if (!this.state.selectedDateFirst) {
             this.setState({
                 rangeProblem: true
             });
@@ -38,7 +57,6 @@ class DateComponent extends Component {
                 position: toast.POSITION.TOP_RIGHT
             });
         } else if (endDate.getTime() < startDate.getTime()) {
-            console.log("first block");
             this.setState({
                 rangeProblem: true
             });
@@ -46,7 +64,6 @@ class DateComponent extends Component {
                 position: toast.POSITION.TOP_RIGHT
             });
         } else if (range > 10) {
-            console.log("second block");
             this.setState({
                 rangeProblem: true
             });
@@ -54,7 +71,6 @@ class DateComponent extends Component {
                 position: toast.POSITION.TOP_RIGHT
             });
         } else {
-            console.log("third block");
             this.setState({
                 selectedDateSecond: event.currentTarget.value,
                 rangeProblem: false
@@ -66,7 +82,6 @@ class DateComponent extends Component {
     };
 
     daysBetween = (date1, date2) => {
-        console.log("called");
         // The number of milliseconds in one day
         var ONE_DAY = 1000 * 60 * 60 * 24;
 
@@ -94,7 +109,8 @@ class DateComponent extends Component {
             >
                 <div>
                     <TextField
-                        id="calender"
+                        error={this.state.selectFirst}
+                        variant="outlined"
                         label="Start Date"
                         type="date"
                         style={{
@@ -111,7 +127,7 @@ class DateComponent extends Component {
                 <div>
                     <TextField
                         error={this.state.rangeProblem}
-                        id="calender"
+                        variant="outlined"
                         label="End Date"
                         type="date"
                         style={{
