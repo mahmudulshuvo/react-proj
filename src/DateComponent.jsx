@@ -18,7 +18,8 @@ class DateComponent extends Component {
         console.log("first ", new Date(event.currentTarget.value));
         if (!event.currentTarget.value) {
             this.setState({
-                selectFirst: true
+                selectFirst: true,
+                selectedDateFirst: event.currentTarget.value
             });
             toast.error("Please select start date!", {
                 position: toast.POSITION.TOP_RIGHT
